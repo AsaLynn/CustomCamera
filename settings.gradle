@@ -1,2 +1,3 @@
 rootProject.name = "CustomCamera"
-include ':temp'
+include ':camera'
+include ':app'
