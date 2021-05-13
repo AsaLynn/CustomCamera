@@ -1,4 +1,3 @@
 rootProject.name = "CustomCamera"
 include ':camera'
-include ':app'
-include ':camerafragment'
+include ':cameraapp'
