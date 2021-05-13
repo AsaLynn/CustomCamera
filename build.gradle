@@ -28,3 +28,11 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext {
+    sdk = 30
+    buildTools = "30.0.3" //keep 25.0.0 for Continuous Integration
+    minSdk = 14
+    libraryVersion = "1.0.10"
+    supportVersion = "25.0.0"
+}
