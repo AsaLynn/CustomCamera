@@ -19,6 +19,7 @@ import com.water.camera.listener.CaptureListener;
 import com.water.camera.listener.ClickListener;
 import com.water.camera.listener.ReturnListener;
 import com.water.camera.listener.TypeListener;
+import com.water.camera.util.SizeUtils;
 
 
 /**
@@ -35,8 +36,8 @@ public class CaptureLayout extends FrameLayout {
     private ClickListener rightClickListener;   //右边按钮监听
     private TextView tvLeftButton;
 
-    public void setTypeListener(TypeListener mTypeListener) {
-        this.mTypeListener = mTypeListener;
+    public void setTypeListener(TypeListener listener) {
+        this.mTypeListener = listener;
     }
 
     public void setCaptureListener(CaptureListener listener) {
@@ -84,6 +85,7 @@ public class CaptureLayout extends FrameLayout {
             layout_width = outMetrics.widthPixels / 2;
         }
         button_size = (int) (layout_width / 4.5f);
+        //button_size = (int) (SizeUtils.dp2px(getContext(),50));
         layout_height = button_size + (button_size / 5) * 2 + 100;
 
         initView();
@@ -97,7 +99,7 @@ public class CaptureLayout extends FrameLayout {
     }
 
     public void initEvent() {
-        //默认Typebutton为隐藏
+        //默认为隐藏
         iv_custom_right.setVisibility(GONE);
         btn_cancel.setVisibility(GONE);
         btn_confirm.setVisibility(GONE);
@@ -140,11 +142,10 @@ public class CaptureLayout extends FrameLayout {
         set.start();
     }
 
-
     private void initView() {
         setWillNotDraw(false);
         //拍照按钮
-        btn_capture = new CaptureButton(getContext(), button_size);
+        btn_capture = new CaptureButton(getContext(), (int) (SizeUtils.dp2px(getContext(),50)));
         LayoutParams btn_capture_param = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         btn_capture_param.gravity = Gravity.CENTER;
         btn_capture.setLayoutParams(btn_capture_param);

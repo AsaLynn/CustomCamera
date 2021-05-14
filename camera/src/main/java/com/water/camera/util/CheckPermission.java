@@ -69,7 +69,6 @@ public class CheckPermission {
                     audioRecord.stop();
                     audioRecord.release();
                     audioRecord = null;
-
                 }
 
                 return STATE_SUCCESS;

@@ -1,14 +1,15 @@
 buildscript {
-    ext.kotlin_version = "1.4.32"
+    ext.kotlin_version = '1.5.0'
     repositories {
         google()
+        jcenter()
         mavenCentral()
         maven { url "https://www.jitpack.io" }
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.2.0"
+        classpath 'com.android.tools.build:gradle:4.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
     }
 }
 
@@ -16,7 +17,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        //jcenter() // Warning: this repository is going to shut down soon
+        jcenter()
         maven { url "https://www.jitpack.io" }
     }
 }

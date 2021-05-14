@@ -13,11 +13,18 @@
         app:iconRight="@mipmap/ic_photo_album"
         app:iconSize="30dp"
         app:leftButtonType="text"
-        app:switchCameraEnabled="false"
         app:previewEnabled="false"
+        app:switchCameraEnabled="false"
         app:switchFlashEnabled="false" />
 
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--
+
+    -->
 
 
 

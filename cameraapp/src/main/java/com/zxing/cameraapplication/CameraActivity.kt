@@ -21,6 +21,7 @@ import com.water.camera.util.FileUtil
 import kotlinx.android.synthetic.main.activity_camera.*
 import java.io.File
 
+
 /**
  * 自定义相机页面.
  */
@@ -55,8 +56,8 @@ class CameraActivity : AppCompatActivity() {
         setContentView(R.layout.activity_camera)
 
         cameraView.run {
-            //设置视频保存路径
-            setSaveVideoPath(Environment.getExternalStorageDirectory().path + File.separator + "JCamera")
+            //设置保存路径
+            setSaveVideoPath(Environment.getExternalStorageDirectory().path + File.separator + "hsy")
             setFeatures(CameraView.BUTTON_STATE_ONLY_CAPTURE)
             setTip("")
             setErrorLisenter(object : ErrorListener {
@@ -77,11 +78,11 @@ class CameraActivity : AppCompatActivity() {
                 OnCameraListener {
                 override fun captureSuccess(bitmap: Bitmap) {
                     Log.i(TAG, "captureSuccess: ")
-                    val path = FileUtil.saveBitmap("JCamera", bitmap)
+                    /*val path = FileUtil.saveBitmap("JCamera", bitmap)
                     val intent = Intent()
                     intent.putExtra("path", path)
                     setResult(101, intent)
-                    finish()
+                    finish()*/
                 }
 
                 override fun recordSuccess(url: String, firstFrame: Bitmap) {
@@ -104,6 +105,9 @@ class CameraActivity : AppCompatActivity() {
             }
         }
         Log.i("CJT", DeviceUtil.getDeviceModel())
+
+
+
     }
 
     override fun onStart() {

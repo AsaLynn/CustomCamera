@@ -26,6 +26,7 @@ import com.water.camera.listener.ErrorListener;
 import com.water.camera.listener.OnCameraListener;
 import com.water.camera.listener.TypeListener;
 import com.water.camera.state.CameraMachine;
+import com.water.camera.util.AnimUtils;
 import com.water.camera.util.FileUtil;
 import com.water.camera.util.LogUtil;
 import com.water.camera.util.ScreenUtils;
@@ -122,6 +123,8 @@ public class CameraView extends FrameLayout implements CameraInterface.CameraOpe
     private boolean mSwitchFlashEnabled;
     private int leftButtonType;
     private boolean previewEnabled;
+    private View ivCameraBorder;
+    private View ivAwaiting;
 
     public CameraView(Context context) {
         this(context, null);
@@ -164,6 +167,9 @@ public class CameraView extends FrameLayout implements CameraInterface.CameraOpe
     private void initView() {
         setWillNotDraw(false);
         View view = LayoutInflater.from(mContext).inflate(R.layout.camera_view, this);
+        ivCameraBorder = view.findViewById(R.id.ivCameraBorder);
+        ivAwaiting = view.findViewById(R.id.ivAwaiting);
+
         mVideoView = view.findViewById(R.id.video_preview);
         mPhoto = view.findViewById(R.id.photo);
         mSwitchCamera = view.findViewById(R.id.ivSwitch);
@@ -183,7 +189,7 @@ public class CameraView extends FrameLayout implements CameraInterface.CameraOpe
         mCaptureLayout.setDuration(duration);
         mCaptureLayout.setIconSrc(iconLeft, iconRight);
 
-        mFoucsView = view.findViewById(R.id.fouce_view);
+        mFoucsView = view.findViewById(R.id.focusView);
         mVideoView.getHolder().addCallback(this);
         //切换摄像头
         mSwitchCamera.setOnClickListener(v -> machine.onSwitch(mVideoView.getHolder(), screenProp));
@@ -275,6 +281,7 @@ public class CameraView extends FrameLayout implements CameraInterface.CameraOpe
         CameraInterface.getInstance().registerSensorManager(mContext);
         CameraInterface.getInstance().setSwitchView(mSwitchCamera, mFlashLamp);
         machine.start(mVideoView.getHolder(), screenProp);
+        AnimUtils.INSTANCE.playAnimation(ivAwaiting, ivCameraBorder, true);
     }
 
     //生命周期onPause
@@ -284,6 +291,7 @@ public class CameraView extends FrameLayout implements CameraInterface.CameraOpe
         resetState(TYPE_PICTURE);
         CameraInterface.getInstance().isPreview(false);
         CameraInterface.getInstance().unregisterSensorManager(mContext);
+        AnimUtils.INSTANCE.playAnimation(ivAwaiting, ivCameraBorder, false);
     }
 
     //SurfaceView生命周期
@@ -456,7 +464,6 @@ public class CameraView extends FrameLayout implements CameraInterface.CameraOpe
                 }
                 break;
             case TYPE_SHORT:
-                break;
             case TYPE_DEFAULT:
                 break;
         }
@@ -567,7 +574,13 @@ public class CameraView extends FrameLayout implements CameraInterface.CameraOpe
 
     @Override
     public void takePicture(Bitmap bitmap) {
-
+        captureBitmap = bitmap;
+        //machine.cancel(mVideoView.getHolder(), screenProp);
+        //machine.restart();
+        resetState(TYPE_DEFAULT);
+        CameraInterface.getInstance().registerSensorManager(mContext);
+        CameraInterface.getInstance().setSwitchView(mSwitchCamera, mFlashLamp);
+        machine.start(mVideoView.getHolder(), screenProp);
     }
 
     public void setLeftClickListener(ClickListener clickListener) {

@@ -15,6 +15,7 @@ import android.view.View;
 import com.water.camera.listener.CaptureListener;
 import com.water.camera.util.CheckPermission;
 import com.water.camera.util.LogUtil;
+import com.water.camera.util.SizeUtils;
 
 import static com.water.camera.CameraView.BUTTON_STATE_BOTH;
 import static com.water.camera.CameraView.BUTTON_STATE_ONLY_CAPTURE;
@@ -45,7 +46,10 @@ public class CaptureButton extends View {
     public static final int STATE_BAN = 0x005;         //禁止状态
 
     private int progress_color = 0xEE16AE16;            //进度条颜色
-    private int outside_color = 0xEEDCDCDC;             //外圆背景色
+    /**
+     * 外圆背景色(0xEEDCDCDC)
+     */
+    private int outside_color = 0xFFFFFFFF;
     private int inside_color = 0xFFFFFFFF;              //内圆背景色
 
 
@@ -91,8 +95,8 @@ public class CaptureButton extends View {
         this.button_size = size;
         button_radius = size / 2.0f;
 
-        button_outside_radius = button_radius;
-        button_inside_radius = button_radius * 0.75f;
+        button_outside_radius = button_radius * 0.75f;
+        button_inside_radius = button_outside_radius * 0.75f;
 
         strokeWidth = size / 15;
         outside_add_size = size / 5;
@@ -129,12 +133,21 @@ public class CaptureButton extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        mPaint.setStyle(Paint.Style.FILL);
 
-        mPaint.setColor(outside_color); //外圆（半透明灰色）
+        //外部圆环
+        mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setStrokeWidth(SizeUtils.dp2px(getContext(),5.0f));
+        mPaint.setColor(outside_color);
+        canvas.drawCircle(center_X, center_Y, button_radius, mPaint);
+
+        //外圆
+        mPaint.setStyle(Paint.Style.FILL);
+        mPaint.setColor(outside_color);
         canvas.drawCircle(center_X, center_Y, button_outside_radius, mPaint);
 
-        mPaint.setColor(inside_color);  //内圆（白色）
+        //内圆
+        mPaint.setStyle(Paint.Style.FILL);
+        mPaint.setColor(inside_color);
         canvas.drawCircle(center_X, center_Y, button_inside_radius, mPaint);
 
         //如果状态为录制状态，则绘制录制进度条
@@ -144,8 +157,8 @@ public class CaptureButton extends View {
             mPaint.setStrokeWidth(strokeWidth);
             canvas.drawArc(rectF, -90, progress, false, mPaint);
         }
-    }
 
+    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -158,7 +171,7 @@ public class CaptureButton extends View {
                 state = STATE_PRESS;        //修改当前状态为点击按下
 
                 //判断按钮状态是否为可录制状态
-                if ((button_state == BUTTON_STATE_ONLY_RECORDER || button_state == BUTTON_STATE_BOTH)){
+                if ((button_state == BUTTON_STATE_ONLY_RECORDER || button_state == BUTTON_STATE_BOTH)) {
                     //同时延长500启动长按后处理的逻辑Runnable
                     postDelayed(longPressRunnable, 500);
                 }
