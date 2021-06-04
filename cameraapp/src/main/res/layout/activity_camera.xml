@@ -11,7 +11,7 @@
         app:duration_max="10000"
         app:iconMargin="20dp"
         app:iconRight="@mipmap/ic_photo_album"
-        app:iconSize="30dp"
+        app:iconSize="24dp"
         app:leftButtonType="text"
         app:previewEnabled="false"
         app:switchCameraEnabled="false"
